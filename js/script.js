@@ -1,13 +1,12 @@
-let conferenceData = {}; // グローバルスコープに空のオブジェクトとして定義
+let conferenceData = []; // 配列として初期化
 const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSNlTx2lmBdfMmCedXLRXp0O3GqyZRF6a0DM4WJT5zAT9FiJhNooBmcq1uh8wBol_XuSdFPcpiGxyZS/pub?output=csv';
 
-// CSVをパースしてconferenceDataオブジェクトを構築する関数
+// CSVをパースしてオブジェクトの配列を返す
 function parseCSV(csvText) {
     const lines = csvText.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim());
-    const data = {};
+    const data = [];
 
-    // 正規表現でカンマ区切りをパース（"..."内のカンマは無視）
     const regex = /,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/;
 
     for (let i = 1; i < lines.length; i++) {
@@ -15,17 +14,20 @@ function parseCSV(csvText) {
         if (values.length < headers.length) continue;
 
         const conference = {};
-        let name = '';
-
         headers.forEach((header, index) => {
             let value = values[index] ? values[index].trim() : '';
-            // "で囲まれた値の場合、前後の"を削除
+            
             if (value.startsWith('"') && value.endsWith('"')) {
-                value = value.substring(1, value.length - 1).replace(/""/g, '"'); // "" を " に置換
+                value = value.substring(1, value.length - 1).replace(/""/g, '"');
             }
 
-            if (header === 'name') {
-                name = value;
+            if (header === 'events') {
+                try {
+                    conference[header] = JSON.parse(value);
+                } catch (e) {
+                    console.error('Failed to parse events JSON:', value, e);
+                    conference[header] = [];
+                }
             } else if (header === 'keyTopics') {
                 conference[header] = value.split(';').map(topic => topic.trim());
             } else if (header === 'difficulty') {
@@ -34,30 +36,211 @@ function parseCSV(csvText) {
                 conference[header] = value;
             }
         });
-
-        if (name) {
-            data[name] = conference;
-        }
+        data.push(conference);
     }
     return data;
 }
 
+function renderTimeline(data) {
+    const tbody = document.querySelector('.timeline table tbody');
+    if (!tbody) return;
+
+    const dateHeaders = Array.from(document.querySelectorAll('.timeline table thead th')).slice(1);
+    let year = '';
+    const dates = dateHeaders.map(th => {
+        const text = th.innerHTML;
+        const yearMatch = text.match(/(\d{4})/);
+        if (yearMatch) {
+            year = yearMatch[1];
+        }
+        const monthMatch = text.match(/(\d{1,2})月/);
+        if (monthMatch) {
+            const month = monthMatch[1].padStart(2, '0');
+            return `${year}-${month}`;
+        }
+        return null;
+    }).filter(Boolean);
+
+    let html = '';
+    let currentCategory = '';
+    let categoryId = '';
+
+    data.forEach(conf => {
+        if (!conf.name) return;
+
+        if (conf.field && conf.field !== currentCategory) {
+            currentCategory = conf.field;
+            categoryId = currentCategory.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+            let icon = '🤖';
+            if (currentCategory === 'コンピュータビジョン') icon = '👁️';
+            else if (currentCategory === 'ロボティクス') icon = '🤖';
+            else if (currentCategory === 'HCI・グラフィックス') icon = '🖥️';
+            else if (currentCategory === 'セキュリティ') icon = '🔒';
+            html += `<tr class="category-header" data-category="${categoryId}"><td colspan="${dates.length + 1}">${icon} ${currentCategory}</td></tr>`;
+        }
+
+        // --- Cycle Grouping Logic ---
+        const cycleGroups = {};
+        if (conf.events) {
+            conf.events.forEach(event => {
+                const yearMatch = event.label.match(/\'(\d{2})/);
+                const cycleKey = yearMatch ? `20${yearMatch[1]}` : 'default';
+                if (!cycleGroups[cycleKey]) {
+                    cycleGroups[cycleKey] = [];
+                }
+                cycleGroups[cycleKey].push(event.date);
+            });
+        }
+
+        const cycleRanges = Object.values(cycleGroups).map(groupDates => {
+            if (groupDates.length === 0) return null;
+            const minDate = groupDates.reduce((a, b) => a < b ? a : b);
+            const maxDate = groupDates.reduce((a, b) => a > b ? a : b);
+            return { start: minDate, end: maxDate };
+        }).filter(Boolean);
+
+        // --- End Cycle Grouping Logic ---
+
+        html += `<tr class="conference-row" data-category="${categoryId}">
+`;
+        html += `<td class="conference-name" onclick="showConferenceInfo('${conf.name}')">${conf.name}</td>`;
+
+        let cycleIndex = 0;
+        dates.forEach(date => {
+            let cycleClass = '';
+            for (let i = 0; i < cycleRanges.length; i++) {
+                if (date >= cycleRanges[i].start && date <= cycleRanges[i].end) {
+                    cycleClass = i % 2 === 0 ? 'cycle-group-even' : 'cycle-group-odd';
+                    break;
+                }
+            }
+
+            const eventsOnDate = conf.events ? conf.events.filter(e => e.date === date) : [];
+            let tdClasses = cycleClass;
+
+            html += `<td class="${tdClasses}">`;
+
+            if (eventsOnDate.length > 1) {
+                html += `<div class="multi-event">`;
+                eventsOnDate.forEach(event => {
+                    html += `<div class="event ${event.type}">${event.label}</div>`;
+                });
+                html += `</div>`;
+            } else if (eventsOnDate.length === 1) {
+                const event = eventsOnDate[0];
+                html += `<div class="event ${event.type}">${event.label}</div>`;
+            }
+            html += `</td>`;
+        });
+
+        html += `</tr>`;
+    });
+
+    tbody.innerHTML = html;
+    setupCollapsibleCategories();
+}
+
+// Function to setup collapsible categories
+function setupCollapsibleCategories() {
+    const headers = document.querySelectorAll('.category-header');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const categoryId = header.dataset.category;
+            const rows = document.querySelectorAll(`.conference-row[data-category="${categoryId}"]`);
+            
+            header.classList.toggle('collapsed');
+
+            rows.forEach(row => {
+                row.classList.toggle('hidden');
+            });
+        });
+    });
+}
+
+
+// Function to update the date display
+function updateDateDisplay() {
+    const dateElement = document.querySelector('.date-display');
+    if (dateElement) {
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
+        dateElement.textContent = `🔔 ${formattedDate}時点の情報です`;
+    }
+}
+
+// Function to add a marker for the current date
+function addTodayMarker() {
+    const today = new Date();
+    const currentMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    
+    const dateHeaders = Array.from(document.querySelectorAll('.timeline table thead th'));
+    let year = '';
+    let todayColumnIndex = -1;
+
+    dateHeaders.forEach((th, index) => {
+        if (index === 0) return; // Skip "学会" header
+
+        const text = th.innerHTML;
+        const yearMatch = text.match(/(\d{4})/);
+        if (yearMatch) {
+            year = yearMatch[1];
+        }
+        const monthMatch = text.match(/(\d{1,2})月/);
+        if (monthMatch) {
+            const month = monthMatch[1].padStart(2, '0');
+            const headerMonth = `${year}-${month}`;
+            if (headerMonth === currentMonth) {
+                todayColumnIndex = index;
+            }
+        }
+    });
+
+    if (todayColumnIndex !== -1) {
+        const headerToMark = dateHeaders[todayColumnIndex];
+        headerToMark.classList.add('today-marker');
+        
+        // Scroll the timeline to the current month
+        headerToMark.scrollIntoView({
+            inline: 'center',
+            block: 'nearest',
+            behavior: 'smooth'
+        });
+
+        const tableRows = document.querySelectorAll('.timeline table tbody tr');
+        tableRows.forEach(row => {
+            const cell = row.querySelector(`td:nth-child(${todayColumnIndex + 1})`);
+            if (cell) {
+                cell.classList.add('today-marker');
+            }
+        });
+    }
+}
 
 // ページの読み込み時にデータをフェッチして初期化
 document.addEventListener('DOMContentLoaded', () => {
+    updateDateDisplay(); // Update the date display
+
     fetch(csvUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
+        .then(response => response.ok ? response.text() : Promise.reject(response.status))
         .then(csvText => {
             conferenceData = parseCSV(csvText);
+            renderTimeline(conferenceData); // タイムラインを描画
+            addTodayMarker(); // 今日の日付マーカーを追加
         })
         .catch(error => {
-            console.error('Error fetching or parsing CSV:', error);
-            // エラー時のフォールバックとして、ローカルのデータを使うなどの処理も考えられる
+            console.warn('Failed to fetch from Google Sheets. Trying local data.csv.', error);
+            fetch('data.csv') // Fallback to local CSV
+                .then(response => response.ok ? response.text() : Promise.reject('Failed to load local CSV'))
+                .then(csvText => {
+                    conferenceData = parseCSV(csvText);
+                    renderTimeline(conferenceData);
+                    addTodayMarker(); // 今日の日付マーカーを追加
+                })
+                .catch(fallbackError => {
+                    console.error('Detailed error:', fallbackError); // より詳細なエラーオブジェクトを出力
+                    const tbody = document.querySelector('.timeline table tbody');
+                    if(tbody) tbody.innerHTML = `<tr><td colspan="31" style="text-align: center; padding: 20px; color: red;">データの読み込みに失敗しました。詳細: ${fallbackError.message || fallbackError}</td></tr>`;
+                });
         });
 });
 
@@ -68,17 +251,15 @@ const closeBtn = document.getElementsByClassName('close')[0];
 
 // Function to show conference info
 function showConferenceInfo(conferenceName) {
-    const data = conferenceData[conferenceName];
+    const data = conferenceData.find(conf => conf.name === conferenceName);
     if (!data) {
         console.error(`Conference data not found for: ${conferenceName}`);
         return;
     }
 
-    // Set title
-    document.getElementById('modalTitle').textContent = conferenceName;
+    document.getElementById('modalTitle').textContent = data.name;
     document.getElementById('modalFullName').textContent = data.fullName;
 
-    // Generate difficulty stars
     let difficultyStars = '';
     for (let i = 0; i < 5; i++) {
         if (i < data.difficulty) {
@@ -88,67 +269,29 @@ function showConferenceInfo(conferenceName) {
         }
     }
 
-    // Generate tier badge
     let tierClass = 'tier-a';
     if (data.tier === 'A*') tierClass = 'tier-a-star';
     else if (data.tier === 'B') tierClass = 'tier-b';
     else if (data.tier === 'Industry') tierClass = 'tier-b';
 
-    // Generate tags
     let tagsHtml = Array.isArray(data.keyTopics) ? data.keyTopics.map(topic => `<span class="tag">${topic}</span>`).join('') : '';
 
-    // Generate modal body
     const bodyHtml = `
         <div class="info-section">
             <h3>📊 基本情報</h3>
-            <div class="info-row">
-                <div class="info-label">🏷️ 分野</div>
-                <div class="info-value"><strong>${data.field || 'N/A'}</strong></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">📁 カテゴリ</div>
-                <div class="info-value">${data.category || 'N/A'}</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">🏆 ランク</div>
-                <div class="info-value"><span class="tier-badge ${tierClass}">${data.tier || 'N/A'}</span></div>
-            </div>
+            <div class="info-row"><div class="info-label">🏷️ 分野</div><div class="info-value"><strong>${data.field || 'N/A'}</strong></div></div>
+            <div class="info-row"><div class="info-label">📁 カテゴリ</div><div class="info-value">${data.category || 'N/A'}</div></div>
+            <div class="info-row"><div class="info-label">🏆 ランク</div><div class="info-value"><span class="tier-badge ${tierClass}">${data.tier || 'N/A'}</span></div></div>
         </div>
-
         <div class="info-section">
             <h3>📈 難易度・競争率</h3>
-            <div class="info-row">
-                <div class="info-label">⭐ 難易度</div>
-                <div class="info-value">
-                    <div class="difficulty">${difficultyStars}</div>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">📉 採択率</div>
-                <div class="info-value"><span class="acceptance-rate">${data.acceptanceRate || 'N/A'}</span></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">📊 影響力指標</div>
-                <div class="info-value">${data.impactFactor || 'N/A'}</div>
-            </div>
+            <div class="info-row"><div class="info-label">⭐ 難易度</div><div class="info-value"><div class="difficulty">${difficultyStars}</div></div></div>
+            <div class="info-row"><div class="info-label">📉 採択率</div><div class="info-value"><span class="acceptance-rate">${data.acceptanceRate || 'N/A'}</span></div></div>
+            <div class="info-row"><div class="info-label">📊 影響力指標</div><div class="info-value">${data.impactFactor || 'N/A'}</div></div>
         </div>
-
-        <div class="info-section">
-            <h3>📝 概要</h3>
-            <p style="line-height: 1.6; color: #495057;">${data.description || 'N/A'}</p>
-        </div>
-
-        <div class="info-section">
-            <h3>🔑 主要トピック</h3>
-            <div class="tags">${tagsHtml}</div>
-        </div>
-
-        <div class="info-section">
-            <h3>💡 投稿のヒント</h3>
-            <p style="line-height: 1.6; color: #495057; background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
-                ${data.tips || 'N/A'}
-            </p>
-        </div>
+        <div class="info-section"><h3>📝 概要</h3><p style="line-height: 1.6; color: #495057;">${data.description || 'N/A'}</p></div>
+        <div class="info-section"><h3>🔑 主要トピック</h3><div class="tags">${tagsHtml}</div></div>
+        <div class="info-section"><h3>💡 投稿のヒント</h3><p style="line-height: 1.6; color: #495057; background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">${data.tips || 'N/A'}</p></div>
     `;
 
     document.getElementById('modalBody').innerHTML = bodyHtml;
