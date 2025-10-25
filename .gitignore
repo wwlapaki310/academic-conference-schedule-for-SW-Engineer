@@ -1,0 +1,30 @@
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# Log files
+*.log
+
+# Node modules (if used in future)
+node_modules/
+
+# Build outputs (if added in future)
+dist/
+build/
+
+# Environment files
+.env
+.env.local
