@@ -161,29 +161,6 @@
         .event.conference { background: #2ecc71; color: white; }
         .event.cfp { background: #9b59b6; color: white; }
         
-        /* Arrow connectors - connecting blocks */
-        .cell-with-arrow {
-            position: relative;
-        }
-        
-        .cell-with-arrow::after {
-            content: '⟹';
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 3em;
-            color: #2980b9;
-            font-weight: bold;
-            z-index: 5;
-            text-shadow: 0 0 5px white, 0 0 10px white;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        
         .multi-event {
             display: flex;
             flex-direction: column;
@@ -458,19 +435,19 @@
                         <td class="conference-name" onclick="showConferenceInfo('NeurIPS')">NeurIPS<br><small>'25 San Diego<br>'26 TBD</small></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -494,13 +471,13 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event abstract">抄録</div></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event abstract">抄録</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -526,13 +503,13 @@
                     <!-- ICLR -->
                     <tr class="conference-row">
                         <td class="conference-name" onclick="showConferenceInfo('ICLR')">ICLR<br><small>'25 Singapore<br>'26 TBD</small></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -565,7 +542,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -599,14 +576,14 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event abstract">抄録</div></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event abstract">抄録</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -637,14 +614,14 @@
                     <tr class="conference-row">
                         <td class="conference-name" onclick="showConferenceInfo('CVPR')">CVPR<br><small>'25 Nashville<br>'26 TBD</small></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -676,14 +653,14 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -787,7 +764,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -827,7 +804,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -859,7 +836,7 @@
                         <td></td>
                         <td><div class="event notification">通知</div></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -896,7 +873,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -937,7 +914,7 @@
                         <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -963,14 +940,14 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event deadline">締切</div></td>
+                        <td><div class="event deadline">締切</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event notification">通知</div></td>
+                        <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1007,7 +984,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1019,7 +996,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催<br>'26</div></td>
+                        <td><div class="event conference">開催<br>'26</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1045,7 +1022,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1057,7 +1034,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催<br>'26</div></td>
+                        <td><div class="event conference">開催<br>'26</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1074,7 +1051,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1117,7 +1094,7 @@
                         <td></td>
                         <td><div class="event notification">通知</div></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td><div class="event deadline">締切1<br>'26</div></td>
@@ -1150,7 +1127,7 @@
                         <td><div class="event notification">通知</div></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1181,7 +1158,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1192,7 +1169,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催<br>'26</div></td>
+                        <td><div class="event conference">開催<br>'26</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1212,7 +1189,7 @@
                         <td class="conference-name" onclick="showConferenceInfo('Black Hat')">Black Hat<br>Europe<br><small>'25 London<br>'26 London</small></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催</div></td>
+                        <td><div class="event conference">開催</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1224,7 +1201,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="cell-with-arrow"><div class="event conference">開催<br>'26</div></td>
+                        <td><div class="event conference">開催<br>'26</div></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1248,8 +1225,7 @@
         <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px; font-size: 0.85em;">
             <h3 style="color: #2c3e50; margin-bottom: 15px;">📌 表の見方</h3>
             <p style="line-height: 1.8; color: #555;">
-                各学会の重要な日程をビジュアルに表示しています。<strong>論文締切</strong>（赤）からスタートし、
-                <strong>採否通知</strong>（青）を経て、<strong>本会議</strong>（緑）まで矢印でつながっています。
+                各学会の重要な日程をビジュアルに表示しています。
                 <strong>アブストラクト締切</strong>（オレンジ）と<strong>CFP公開</strong>（紫）も適宜表示されています。
             </p>
             
