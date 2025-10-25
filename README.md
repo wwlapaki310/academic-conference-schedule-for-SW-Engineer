@@ -56,6 +56,23 @@ ICRA → IROS のサイクル（各6ヶ月間隔）
 ### セキュリティ系
 USENIX Security（2月）、IEEE S&P（6月）、CCS（5月）、NDSS（8月）
 
+## フォルダ構成
+
+```
+C:.
+│  .gitignore
+│  CONTRIBUTING.md
+│  index.html
+│  LICENSE
+│  README.md
+│
+├─css
+│      style.css
+│
+└─js
+        script.js
+```
+
 ## 📝 更新履歴
 
 - 2025年10月: 初版リリース（2025-2027年のスケジュール）
