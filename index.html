@@ -143,6 +143,21 @@
             width: 140px;
             font-size: 0.9em;
             color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .conference-name:hover {
+            background: #e3f2fd !important;
+            color: #1976d2;
+            transform: scale(1.02);
+        }
+        
+        .conference-name::after {
+            content: " ℹ️";
+            font-size: 0.8em;
+            opacity: 0.6;
         }
         
         td {
@@ -223,721 +238,189 @@
             font-weight: bold;
             font-size: 0.9em;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.4s;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .modal-header .conference-full-name {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            line-height: 1;
+        }
+
+        .close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            color: #212529;
+            flex: 1;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .tier-a-star {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .tier-a {
+            background: #28a745;
+            color: white;
+        }
+
+        .tier-b {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .tier-industry {
+            background: #6c757d;
+            color: white;
+        }
+
+        .difficulty {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+        }
+
+        .difficulty-star {
+            color: #ffc107;
+            font-size: 1.2em;
+        }
+
+        .acceptance-rate {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🗓️ 国際会議スケジュール 2025-2027</h1>
-        <div class="subtitle">機械学習・画像処理・ロボティクス・HCI・セキュリティ系の主要学会</div>
-        
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-box deadline"></div>
-                <span>論文締切</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box abstract"></div>
-                <span>アブスト締切</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box notification"></div>
-                <span>採択通知</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box conference"></div>
-                <span>開催</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-box cfp"></div>
-                <span>CFP期間</span>
-            </div>
-        </div>
-        
-        <div class="timeline">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 140px;">学会</th>
-                        <th>2025年<br>10月</th>
-                        <th>11月</th>
-                        <th>12月</th>
-                        <th>2026年<br>1月</th>
-                        <th>2月</th>
-                        <th>3月</th>
-                        <th>4月</th>
-                        <th>5月</th>
-                        <th>6月</th>
-                        <th>7月</th>
-                        <th>8月</th>
-                        <th>9月</th>
-                        <th>10月</th>
-                        <th>11月</th>
-                        <th>12月</th>
-                        <th>2027年<br>1月</th>
-                        <th>2月</th>
-                        <th>3月</th>
-                        <th>4月</th>
-                        <th>5月</th>
-                        <th>6月</th>
-                        <th>7月</th>
-                        <th>8月</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Machine Learning Category -->
-                    <tr>
-                        <td colspan="23" class="category-header">🤖 機械学習 (ML/AI)</td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">NeurIPS<br><small>'25 San Diego<br>'26 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'25<br>12/2-7</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>5/11</div>
-                            <div class="event deadline">締切'26<br>5/15</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>9月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>12月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">ICML<br><small>'26 Seoul<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>1/23</div>
-                            <div class="event deadline">締切'26<br>1/30</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>4月末</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>7/6-12</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'27<br>1/23</div>
-                            <div class="event deadline">締切'27<br>1/30</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>4月末</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>7月</div></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">ICLR<br><small>'26 Rio<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>4/23-27</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>9/27</div>
-                            <div class="event deadline">締切'26<br>10/2</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>12月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">AAAI<br><small>'26 Singapore<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>1/20-27</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>7/25</div>
-                            <div class="event deadline">締切'26<br>8/1</div>
-                        </div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>9月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">IJCAI<br><small>'26 Bremen<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>1/16</div>
-                            <div class="event deadline">締切'26<br>1/23</div>
-                        </div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>3月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>8/15-21</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'27<br>1/16</div>
-                            <div class="event deadline">締切'27<br>1/23</div>
-                        </div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>3月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>8月</div></td>
-                    </tr>
-                    
-                    <!-- Computer Vision Category -->
-                    <tr>
-                        <td colspan="23" class="category-header">👁️ コンピュータビジョン</td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">CVPR<br><small>'26 Washington<br>'27 Seattle</small></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>11/8</div>
-                            <div class="event deadline">締切'26<br>11/13</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>2/26</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>6/15-20</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'27<br>11/7</div>
-                            <div class="event deadline">締切'27<br>11/14</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>2/27</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>6/19-25</div></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">ICCV<br><small>'25 Honolulu<br>'27 TBD</small></td>
-                        <td><div class="event conference">開催'25<br>10/19-25</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'27<br>3/5</div>
-                            <div class="event deadline">締切'27<br>3/12</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>7月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>10月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">ECCV<br><small>'26 Malmö</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>3/5</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>6月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>9/8-13</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">WACV<br><small>'26 Atlanta<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>3/2-6</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>8月</div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>10月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>3月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    
-                    <!-- Robotics Category -->
-                    <tr>
-                        <td colspan="23" class="category-header">🤖 ロボティクス</td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">ICRA<br><small>'26 Vienna<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>1/31</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>6/1-5</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>9/15</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>1/31</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>5/24-28</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">IROS<br><small>'25 Hangzhou<br>'26 Pittsburgh<br>'27 TBD</small></td>
-                        <td><div class="event conference">開催'25<br>10/19-25</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>3/1</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>6/30</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>9/27-10/1</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'27<br>3/1</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>6/30</div></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>9月</div></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">RSS<br><small>'26/'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>7月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'27<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>7月</div></td>
-                        <td></td>
-                    </tr>
-                    
-                    <!-- HCI/Graphics Category -->
-                    <tr>
-                        <td colspan="23" class="category-header">🖥️ HCI & グラフィックス</td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">CHI<br><small>'26 Barcelona<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>4/13-17</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>9月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">SIGGRAPH<br><small>'26/'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>7月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'27<br>1月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>4月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>7月</div></td>
-                        <td></td>
-                    </tr>
-                    
-                    <!-- Security Category -->
-                    <tr>
-                        <td colspan="23" class="category-header">🔒 セキュリティ</td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">IEEE S&P<br><small>'26 SF<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>5/18-21</div></td>
-                        <td><div class="event deadline">締切'26<br>6月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>12月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>5月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">USENIX<br>Security<br><small>'26 Baltimore<br>'27 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'26<br>1/29</div>
-                            <div class="event deadline">締切'26<br>2/5</div>
-                        </div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>5/14</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>8/12-14</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="multi-event">
-                            <div class="event abstract">アブスト'27<br>1/28</div>
-                            <div class="event deadline">締切'27<br>2/4</div>
-                        </div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'27<br>5月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>8月</div></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">NDSS<br><small>'26/'27 SD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>2/23-27</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>8/6</div></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>10/22</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'27<br>2/23-27</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">CCS<br><small>'26 TBD</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event deadline">締切'26<br>5月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知'26<br>9月</div></td>
-                        <td></td>
-                        <td><div class="event conference">開催'26<br>11月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">Black Hat<br>Europe<br><small>'25 London</small></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催'25<br>12/8-11</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">Black Hat<br>Asia<br><small>'26 Singapore</small></td>
-                        <td><div class="event cfp">CFP開始<br>10/16</div></td>
-                        <td></td>
-                        <td><div class="event cfp">CFP終了<br>12/11</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event notification">通知<br>3月</div></td>
-                        <td><div class="event conference">開催<br>4/21-24</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="conference-row">
-                        <td class="conference-name">Black Hat<br>USA<br><small>'26 Las Vegas</small></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event cfp">CFP開始<br>2月</div></td>
-                        <td><div class="event cfp">CFP期間</div></td>
-                        <td><div class="event cfp">CFP終了<br>4月</div></td>
-                        <td><div class="event notification">通知<br>5月</div></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event conference">開催<br>8/1-6</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="notes">
-            <h3>📌 重要ポイント(2025年10月24日現在)</h3>
-            <ul>
-                <li><strong>CVPR 2026の締切が11月13日</strong> - 今すぐ準備が必要!(3週間以内)</li>
-                <li><strong>ICRA 2026は既に締切済み</strong>(2025年9月15日)、通知待ち(1月31日)</li>
-                <li><strong>CHI 2026も既に締切済み</strong>(2025年9月11日)、通知待ち(1月予定)</li>
-                <li>NeurIPS 2026の締切は2026年5月15日 - 機械学習系の最重要締切の一つ</li>
-                <li>ICLR 2026の締切は2025年10月2日 - <strong>締切間近!</strong></li>
-                <li>AAAI 2026の締切は2025年8月1日(論文) - シンガポール開催</li>
-            </ul>
-        </div>
-        
-        <div class="notes" style="background: #d1ecf1; border-left-color: #0c5460;">
-            <h3>🎯 次のアクション優先順位</h3>
-            <ul style="color: #0c5460;">
-                <li><strong>【超緊急】CVPR 2026準備</strong> - 締切まで3週間(11月13日)</li>
-                <li><strong>【緊急】ICLR 2026検討</strong> - 10月2日締切、機械学習系最重要学会</li>
-                <li>Black Hat Asia 2026 CFP検討 - 10月16日開始、12月11日締切</li>
-                <li>ICRA 2026通知待ち(1月31日) - 不採択の場合はIROS 2026準備(3月締切)</li>
-                <li>ECCV 2026準備開始(2026年3月締切予定) - CVPR不採択の再投稿先</li>
-            </ul>
-        </div>
-
-        <div class="notes" style="background: #e8f5e9; border-left-color: #4caf50;">
-            <h3>🔄 効率的な投稿戦略</h3>
-            <ul style="color: #2e7d32;">
-                <li><strong>コンピュータビジョン系</strong>: CVPR → ECCV → ICCV のサイクル(各6ヶ月間隔)</li>
-                <li><strong>ロボティクス系</strong>: ICRA → IROS のサイクル(各6ヶ月間隔)、またはRA-L経由も可</li>
-                <li><strong>機械学習系</strong>: NeurIPS(5月)、ICML(1月)、ICLR(10月)の3つのメジャー学会を回す</li>
-                <li><strong>セキュリティ系</strong>: USENIX Security(2月)、IEEE S&P(6月)、CCS(5月)、NDSS(8月)の4サイクル</li>
-                <li><strong>再投稿の目安</strong>: 不採択から次の学会締切まで最低2-3ヶ月確保</li>
-                <li><strong>ワークショップ活用</strong>: メジャー学会のワークショップでフィードバック獲得→本会議に投稿</li>
-            </ul>
-        </div>
-
-        <div class="notes" style="background: #fff3e0; border-left-color: #ff9800;">
-            <h3>💡 表の見方</h3>
-            <ul style="color: #e65100;">
-                <li>各学会は1行にまとめられており、'26は2026年、'27は2027年のイベントを示します</li>
-                <li>同じ行に複数年のスケジュールが表示されるため、長期計画が立てやすくなっています</li>
-                <li>2027年開催の学会(2026年中に締切)も同じ行に含まれています</li>
-                <li><strong>例:CVPR</strong>の行には、CVPR 2026(2025年11月締切)とCVPR 2027(2026年11月締切)の両方が表示</li>
-            </ul>
-        </div>
-    </div>
-</body>
-</html>
+        <div class="subtitle">機械学習・画像処理・ロボティクス・HCI・セキュリティ系の主要学会（学会名をクリックで詳細表示）</div>
