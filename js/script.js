@@ -218,11 +218,13 @@ function addTodayMarker() {
             existingMarker.remove();
         }
 
+        const timelineTable = timelineContainer.querySelector('table');
+        const tableRect = timelineTable.getBoundingClientRect(); // Get rect of the table
+
         const headerRect = todayColumnHeader.getBoundingClientRect();
         const timelineRect = timelineContainer.getBoundingClientRect();
 
         // Calculate the left position of the line relative to the timeline container
-        // (currentDay - 1) because day 1 is at the very beginning, day X is at X/daysInMonth
         const percentageAcrossMonth = (currentDay - 1) / (daysInMonth - 1);
         const leftOffsetWithinColumn = headerRect.width * percentageAcrossMonth;
         const totalLeftOffset = (headerRect.left - timelineRect.left) + leftOffsetWithinColumn;
@@ -230,8 +232,8 @@ function addTodayMarker() {
         const todayLine = document.createElement('div');
         todayLine.classList.add('today-vertical-marker');
         todayLine.style.left = `${totalLeftOffset}px`;
-        todayLine.style.height = `${timelineTable.offsetHeight}px`; // Height of the entire table
-        todayLine.style.top = `${timelineTable.offsetTop - timelineContainer.offsetTop}px`; // Position relative to timeline container
+        todayLine.style.height = `${tableRect.height}px`; // Use the actual height of the table
+        todayLine.style.top = `${tableRect.top - timelineRect.top}px`; // Position relative to timeline container, starting from table's top
 
         timelineContainer.appendChild(todayLine);
 
