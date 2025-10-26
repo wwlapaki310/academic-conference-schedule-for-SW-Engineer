@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>効率的な投稿戦略</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .strategy-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .strategy-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .strategy-section h3 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .strategy-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        .strategy-section a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .strategy-section a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        .back-link:hover {
+            background: #2980b9;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .navbar a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .navbar a:hover {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .navbar a.active {
+            background: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">スケジュール</a>
+        <a href="strategy.html" class="active">効率的な投稿戦略</a>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSNlTx2lmBdfMmCedXLRXp0O3GqyZRF6a0DM4WJT5zAT9FiJhNooBmcq1uh8wBol_XuSdFPcpiGxyZS/pubhtml" target="_blank" rel="noopener noreferrer">Google Spreadsheet</a>
+    </div>
+    <div class="container">
+        <h1>効率的な投稿戦略</h1>
+        <div class="subtitle">分野ごとの国際会議・論文投稿戦略のヒント</div>
+
+        <div class="strategy-section">
+            <h2>投稿戦略の概要</h2>
+            <p style="line-height: 1.8; color: #555;">
+                国際会議やジャーナルへの論文投稿は、研究者にとって重要な活動です。
+                ここでは、分野ごとに時期ごとの大まかな戦略、投稿先の優先順位、リジェクト時の対応など、効率的な投稿を行うためのヒントをまとめます。
+                自身の研究分野やキャリアプランに合わせて、最適な戦略を立てる際の参考にしてください。
+            </p>
+            <h3 style="color: #2c3e50; margin-top: 25px; margin-bottom: 15px;">💡 効率的な投稿戦略</h3>
+            <ul style="line-height: 1.8; color: #555; padding-left: 20px;">
+                <li><strong>年間スケジュールを立てる</strong>: 複数の学会を視野に入れ、締切を逆算して研究を進めましょう</li>
+                <li><strong>リジェクト→次の学会へ</strong>: 1つの学会でリジェクトされても、フィードバックを活かして次の締切に向けて改善</li>
+                <li><strong>Tier A*を狙う</strong>: 採択率は低いですが、キャリアへの影響は大きい。挑戦する価値あり</li>
+                <li><strong>アブスト締切に注意</strong>: ICML、IJCAIなどはアブストラクト締切が先にあります</li>
+            </ul>
+        </div>
+
+        <div class="strategy-section">
+            <h2>機械学習分野の投稿戦略</h2>
+            <p style="line-height: 1.8; color: #555;">
+                機械学習分野は進化が速く、主要な国際会議（NeurIPS, ICML, ICLR, KDDなど）への投稿は競争が激しいです。
+                以下の戦略を参考に、効果的な投稿を目指しましょう。
+            </p>
+            <ul>
+                <li><strong>Q1 (1-3月)</strong>: 基礎研究や理論的な進展は、この時期に締切がある会議（例: ICLR）を狙う。</li>
+                <li><strong>Q2 (4-6月)</strong>: 実験結果が固まってきたら、応用寄りの会議（例: ICML, KDD）を検討。</li>
+                <li><strong>Q3 (7-9月)</strong>: 新しいアイデアや速報性のある結果は、ワークショップやジャーナルへの投稿も視野に入れる。</li>
+                <li><strong>Q4 (10-12月)</strong>: 年末の締切に向けて、大規模な実験や既存手法の改良に取り組む。</li>
+                <li><strong>優先順位</strong>: まずはトップカンファレンス（NeurIPS, ICML）を目標にし、リジェクトされた場合はフィードバックを元に次の会議（AAAI, IJCAIなど）へ再投稿を検討する。</li>
+            </ul>
+        </div>
+
+        <div class="strategy-section">
+            <h2>画像処理分野の投稿戦略</h2>
+            <p style="line-height: 1.8; color: #555;">
+                画像処理分野は、コンピュータビジョンと密接に関連し、深層学習の発展により急速に進化しています。
+                主要な国際会議（CVPR, ICCV, ECCVなど）への投稿戦略を以下に示します。
+            </p>
+            <ul>
+                <li><strong>Q1 (1-3月)</strong>: 新しい画像認識モデルや生成モデルの提案は、この時期の会議（例: CVPR）を狙う。</li>
+                <li><strong>Q2 (4-6月)</strong>: 大規模なデータセットを用いた実験結果や、既存手法の性能改善は、ICCVやECCVを検討。</li>
+                <li><strong>Q3 (7-9月)</strong>: 特定の画像処理タスク（例: 超解像、セグメンテーション）に特化した研究は、専門ワークショップやジャーナルへの投稿も視野に入れる。</li>
+                <li><strong>Q4 (10-12月)</strong>: 年末に向けて、理論的な側面を強化した研究や、新しい応用分野の開拓に取り組む。</li>
+                <li><strong>優先順位</strong>: CVPR, ICCV, ECCVといった主要会議を目標にし、リジェクト時は、フィードバックを元に次の会議やジャーナルへの再投稿を検討する。</li>
+            </ul>
+        </div>
+
+
+        <div class="strategy-section">
+            <h2>ロボティクス分野の投稿戦略</h2>
+            <p style="line-height: 1.8; color: #555;">
+                ロボティクス分野は、ハードウェアとソフトウェアの融合が特徴であり、実験結果の重要性が高いです。
+                主要な国際会議（ICRA, IROS, RSSなど）への投稿戦略を以下に示します。
+            </p>
+            <ul>
+                <li><strong>Q1 (1-3月)</strong>: 新しいアルゴリズムやシステム提案は、理論的な側面を強調しつつ、この時期の会議（例: RSS）を狙う。</li>
+                <li><strong>Q2 (4-6月)</strong>: 実機での検証が完了したら、実用性や応用例を示す会議（例: ICRA）を検討。</li>
+                <li><strong>Q3 (7-9月)</strong>: 大規模な実験データやベンチマーク結果は、この時期の会議（例: IROS）で発表する。</li>
+                <li><strong>Q4 (10-12月)</strong>: 年末に向けて、長期的なプロジェクトの成果や、より洗練されたシステムを発表する準備を進める。</li>
+                <li><strong>優先順位</strong>: まずはICRA, IROSといった大規模会議を目標にし、リジェクトされた場合は、専門分野のワークショップやジャーナルへの投稿も検討する。</li>
+            </ul>
+        </div>
+
+        <div class="strategy-section">
+            <h2>HCI分野の投稿戦略</h2>
+            <p style="line-height: 1.8; color: #555;">
+                HCI分野は、ユーザー体験やインタラクションデザインに焦点を当て、多様な研究手法が用いられます。
+                主要な国際会議（CHI, UIST, CSCWなど）への投稿戦略を以下に示します。
+            </p>
+            <ul>
+                <li><strong>Q1 (1-3月)</strong>: 新しいインタラクション技術やプロトタイプの提案は、この時期の会議（例: CHI Late-breaking Work）を狙う。</li>
+                <li><strong>Q2 (4-6月)</strong>: ユーザー調査や評価結果がまとまったら、フルペーパーとしてCHIやUISTを検討。</li>
+                <li><strong>Q3 (7-9月)</strong>: 社会的側面や協調作業に焦点を当てた研究は、CSCWなどの会議を視野に入れる。</li>
+                <li><strong>Q4 (10-12月)</strong>: 年末に向けて、長期的なユーザー研究や理論的考察を深める。</li>
+                <li><strong>優先順位</strong>: CHIを最優先とし、UISTやCSCWなど専門性の高い会議も検討する。リジェクト時は、ジャーナルやワークショップへの再投稿を考慮する。</li>
+            </ul>
+        </div>
+
+        <div class="strategy-section">
+            <h2>セキュリティ分野の投稿戦略</h2>
+            <p style="line-height: 1.8; color: #555;">
+                セキュリティ分野は、攻撃と防御のイタレーションが速く、常に最新の脅威と対策が求められます。
+                主要な国際会議（S&P, USENIX Security, CCS, NDSSなど）への投稿戦略を以下に示します。
+            </p>
+            <ul>
+                <li><strong>Q1 (1-3月)</strong>: 新しい攻撃手法や脆弱性の発見は、速報性を重視し、この時期の会議（例: NDSS）を狙う。</li>
+                <li><strong>Q2 (4-6月)</strong>: 提案する防御策やシステムの実装・評価が完了したら、USENIX SecurityやCCSを検討。</li>
+                <li><strong>Q3 (7-9月)</strong>: 大規模なデータを用いた分析や、理論的なセキュリティモデルの研究は、S&Pなどの会議を視野に入れる。</li>
+                <li><strong>Q4 (10-12月)</strong>: 年末に向けて、長期的な脅威分析やプライバシー保護技術の研究を進める。</li>
+                <li><strong>優先順位</strong>: S&P, USENIX Security, CCS, NDSSといったトップ4会議を目標にし、リジェクト時は、専門ワークショップやジャーナルへの投稿、あるいはより小規模な会議への再投稿を検討する。</li>
+            </ul>
+        </div>
+
+
+        <div class="strategy-section">
+            <h2>参考文献</h2>
+            <ul>
+                <li><a href="https://speakerdeck.com/koide3/rsj2025-luncheon-seminar" target="_blank" rel="noopener noreferrer">国際論文を出そう！ICRA / IROS / RA-L への論文投稿の心構えとノウハウ</a></li>
+                <li><a href="https://speakerdeck.com/asuna_jp/sekiyuriteikiyanpu-2025-quan-guo-da-hui-te-bie-jiang-yi-t1-hai-wai-nosekiyuriteikomiyuniteinifei-biip-mu-sonodi-bu-karazui-qian-xian-made" target="_blank" rel="noopener noreferrer">セキュリティ・キャンプ 2025 全国大会 特別講義 T1「海外のセキュリティコミュニティに飛び込む」</a></li>
+                <li><a href="https://speakerdeck.com/digitalnaturegroup/xian-duan-ji-shu-tomedeiabiao-xian-2018-number-1?slide=19" target="_blank" rel="noopener noreferrer">先端技術とメディア表現（HCI分野のサーベイ方法、落合陽一さん）</a></li>
+                <li><a href="https://www.slideshare.net/slideshow/1-ftma15/47697911" target="_blank" rel="noopener noreferrer">HCI分野のサーベイ方法に関する追加資料</a></li>
+                <li><a href="https://www.slideshare.net/slideshow/ss-43935588/43935588" target="_blank" rel="noopener noreferrer">CV分野のサーベイ方法</a></li>
+            </ul>
+
+
+
+
+
+
+
+
+    </div>
+</body>
+</html>

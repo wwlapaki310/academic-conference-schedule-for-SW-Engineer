@@ -123,12 +123,16 @@ function renderTimeline(data) {
             if (eventsOnDate.length > 1) {
                 html += `<div class="multi-event">`;
                 eventsOnDate.forEach(event => {
-                    html += `<div class="event ${event.type}">${event.label}</div>`;
+                    const specificDate = event.specific_date || '未定';
+                    const specificDateAttr = `data-specific-date="${specificDate}" onclick="showDatePopover(this)"`;
+                    html += `<div class="event ${event.type}" ${specificDateAttr}>${event.label}</div>`;
                 });
                 html += `</div>`;
             } else if (eventsOnDate.length === 1) {
                 const event = eventsOnDate[0];
-                html += `<div class="event ${event.type}">${event.label}</div>`;
+                const specificDate = event.specific_date || '未定';
+                const specificDateAttr = `data-specific-date="${specificDate}" onclick="showDatePopover(this)"`;
+                html += `<div class="event ${event.type}" ${specificDateAttr}>${event.label}</div>`;
             }
             html += `</td>`;
         });
@@ -316,3 +320,32 @@ document.addEventListener('keydown', function(event) {
         modal.style.display = 'none';
     }
 });
+
+function showDatePopover(element) {
+    // Remove any existing popovers
+    const existingPopover = document.querySelector('.date-popover');
+    if (existingPopover) {
+        existingPopover.remove();
+    }
+
+    const specificDate = element.getAttribute('data-specific-date');
+    if (!specificDate) return;
+
+    const popover = document.createElement('div');
+    popover.className = 'date-popover';
+    popover.innerHTML = specificDate;
+    document.body.appendChild(popover);
+
+    const rect = element.getBoundingClientRect();
+    popover.style.left = `${rect.left + window.scrollX}px`;
+    popover.style.top = `${rect.bottom + window.scrollY + 5}px`;
+
+    // Close popover when clicking outside
+    setTimeout(() => {
+        document.addEventListener('click', (e) => {
+            if (!popover.contains(e.target) && e.target !== element) {
+                popover.remove();
+            }
+        }, { once: true });
+    }, 0);
+}
