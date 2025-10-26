@@ -456,7 +456,8 @@
 
 .navbar {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Changed back to center */
+    align-items: center; /* Keep this for vertical alignment */
     margin-bottom: 30px;
     background: #f8f9fa;
     padding: 15px 20px;
@@ -479,4 +480,21 @@
 .navbar a.active {
     background: #3498db !important;
     color: white !important;
+}
+
+.github-corner {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    z-index: 1001; /* Ensure it's above everything else */
+}
+
+.github-corner a {
+    color: #24292e; /* GitHub dark color */
+    font-size: 2em; /* Make the icon size appropriate */
+    transition: color 0.3s ease;
+}
+
+.github-corner a:hover {
+    color: #3498db; /* Highlight on hover */
 }
