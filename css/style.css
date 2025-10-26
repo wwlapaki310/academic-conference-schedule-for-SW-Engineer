@@ -68,8 +68,16 @@
             margin-top: 20px;
             overflow-x: auto;
             isolation: isolate;
+            position: relative; /* Added for positioning the vertical marker */
         }
         
+        .today-vertical-marker {
+            position: absolute;
+            width: 2px; /* Thin line */
+            background-color: #e74c3c; /* Red color, same as deadline */
+            z-index: 999; /* Ensure it's above other elements but below modal */
+            pointer-events: none; /* Allow interaction with elements behind the line */
+        }        
         table {
             width: 100%;
             border-collapse: collapse;

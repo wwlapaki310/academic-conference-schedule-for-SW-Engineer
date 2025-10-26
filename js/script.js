@@ -175,15 +175,23 @@ function updateDateDisplay() {
 // Function to add a marker for the current date
 function addTodayMarker() {
     const today = new Date();
-    const currentMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-    
-    const dateHeaders = Array.from(document.querySelectorAll('.timeline table thead th'));
+    const currentDay = today.getDate();
+    const currentMonthIndex = today.getMonth(); // 0-indexed
+    const currentYear = today.getFullYear();
+
+    const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+
+    const timelineContainer = document.querySelector('.timeline');
+    const timelineTable = timelineContainer.querySelector('table');
+    const dateHeaders = Array.from(timelineTable.querySelectorAll('thead th'));
+
     let year = '';
+    let todayColumnHeader = null;
     let todayColumnIndex = -1;
 
-    dateHeaders.forEach((th, index) => {
-        if (index === 0) return; // Skip "学会" header
-
+    // Find the header for the current month
+    for (let i = 1; i < dateHeaders.length; i++) { // Start from 1 to skip "学会"
+        const th = dateHeaders[i];
         const text = th.innerHTML;
         const yearMatch = text.match(/(\d{4})/);
         if (yearMatch) {
@@ -193,29 +201,45 @@ function addTodayMarker() {
         if (monthMatch) {
             const month = monthMatch[1].padStart(2, '0');
             const headerMonth = `${year}-${month}`;
-            if (headerMonth === currentMonth) {
-                todayColumnIndex = index;
+            const todayMonth = `${currentYear}-${String(currentMonthIndex + 1).padStart(2, '0')}`;
+
+            if (headerMonth === todayMonth) {
+                todayColumnHeader = th;
+                todayColumnIndex = i;
+                break;
             }
         }
-    });
+    }
 
-    if (todayColumnIndex !== -1) {
-        const headerToMark = dateHeaders[todayColumnIndex];
-        headerToMark.classList.add('today-marker');
-        
+    if (todayColumnHeader) {
+        // Remove any existing vertical marker to avoid duplicates
+        const existingMarker = timelineContainer.querySelector('.today-vertical-marker');
+        if (existingMarker) {
+            existingMarker.remove();
+        }
+
+        const headerRect = todayColumnHeader.getBoundingClientRect();
+        const timelineRect = timelineContainer.getBoundingClientRect();
+
+        // Calculate the left position of the line relative to the timeline container
+        // (currentDay - 1) because day 1 is at the very beginning, day X is at X/daysInMonth
+        const percentageAcrossMonth = (currentDay - 1) / (daysInMonth - 1);
+        const leftOffsetWithinColumn = headerRect.width * percentageAcrossMonth;
+        const totalLeftOffset = (headerRect.left - timelineRect.left) + leftOffsetWithinColumn;
+
+        const todayLine = document.createElement('div');
+        todayLine.classList.add('today-vertical-marker');
+        todayLine.style.left = `${totalLeftOffset}px`;
+        todayLine.style.height = `${timelineTable.offsetHeight}px`; // Height of the entire table
+        todayLine.style.top = `${timelineTable.offsetTop - timelineContainer.offsetTop}px`; // Position relative to timeline container
+
+        timelineContainer.appendChild(todayLine);
+
         // Scroll the timeline to the current month
-        headerToMark.scrollIntoView({
+        todayColumnHeader.scrollIntoView({
             inline: 'center',
             block: 'nearest',
             behavior: 'smooth'
-        });
-
-        const tableRows = document.querySelectorAll('.timeline table tbody tr');
-        tableRows.forEach(row => {
-            const cell = row.querySelector(`td:nth-child(${todayColumnIndex + 1})`);
-            if (cell) {
-                cell.classList.add('today-marker');
-            }
         });
     }
 }
