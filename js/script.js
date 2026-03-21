@@ -161,6 +161,7 @@ function setupCollapsibleCategories() {
             const cRows = document.querySelectorAll(`.conference-row[data-category="${cId}"]`);
             header.classList.toggle('collapsed');
             cRows.forEach(row => row.classList.toggle('hidden'));
+            addTodayMarker();
         });
     });
 }
