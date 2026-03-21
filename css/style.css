@@ -64,9 +64,12 @@
         .conference { background: #2ecc71; }
         .cfp { background: #9b59b6; }
         
-        .timeline {
+        .timeline-wrapper {
             margin-top: 20px;
             overflow-x: auto;
+        }
+
+        .timeline {
             isolation: isolate;
             position: relative; /* Added for positioning the vertical marker */
         }

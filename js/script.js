@@ -178,6 +178,7 @@ function addTodayMarker() {
 
     const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
 
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
     const timelineContainer = document.querySelector('.timeline');
     const timelineTable = timelineContainer.querySelector('table');
     const dateHeaders = Array.from(timelineTable.querySelectorAll('thead th'));
@@ -224,7 +225,7 @@ function addTodayMarker() {
         // Calculate the left position of the line relative to the timeline container
         const percentageAcrossMonth = (currentDay - 1) / (daysInMonth - 1);
         const leftOffsetWithinColumn = headerRect.width * percentageAcrossMonth;
-        const totalLeftOffset = (headerRect.left - timelineRect.left) + timelineContainer.scrollLeft + leftOffsetWithinColumn;
+        const totalLeftOffset = (headerRect.left - timelineRect.left) + timelineWrapper.scrollLeft + leftOffsetWithinColumn;
 
         const todayLine = document.createElement('div');
         todayLine.classList.add('today-vertical-marker');
