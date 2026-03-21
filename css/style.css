@@ -127,8 +127,8 @@
             left: 0;
             z-index: 100;
             padding-left: 35px !important;
-            width: 180px;
-            min-width: 180px;
+            width: 220px;
+            min-width: 220px;
         }
 
         .category-header .category-name-cell::before {
@@ -157,7 +157,7 @@
             font-weight: 600;
             padding: 15px 10px;
             background: #f8f9fa;
-            width: 180px;
+            width: 220px;
             font-size: 0.9em;
             color: #2c3e50;
                 cursor: pointer;
@@ -339,7 +339,7 @@
         .info-label {
             font-weight: 600;
             color: #495057;
-            min-width: 180px;
+            min-width: 220px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -433,7 +433,7 @@
     left: 0;
     z-index: 100;
     padding-left: 35px !important;
-    width: 180px;
+    width: 220px;
 }
 
 .category-header .category-name-cell::before {
