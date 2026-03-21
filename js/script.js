@@ -71,12 +71,12 @@ function renderTimeline(data) {
         if (conf.field && conf.field !== currentCategory) {
             currentCategory = conf.field;
             categoryId = currentCategory.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
-            let icon = '🤖';
-            if (currentCategory === 'コンピュータビジョン') icon = '👁️';
-            else if (currentCategory === 'ロボティクス') icon = '🤖';
-            else if (currentCategory === 'HCI・グラフィックス') icon = '🖥️';
-            else if (currentCategory === 'セキュリティ') icon = '🔒';
-            html += `<tr class="category-header" data-category="${categoryId}"><td class="category-name-cell">${icon} ${currentCategory}</td><td class="category-spacer" colspan="${dates.length}"></td></tr>`;
+            const labelMap = {
+                'コンピュータビジョン': 'Computer Vision',
+                'コンピュータグラフィックス': 'Computer Graphics',
+            };
+            const displayLabel = labelMap[currentCategory] || currentCategory;
+            html += `<tr class="category-header" data-category="${categoryId}"><td class="category-name-cell">${displayLabel}</td><td class="category-spacer" colspan="${dates.length}"></td></tr>`;
         }
 
         // --- Cycle Grouping Logic ---
@@ -148,15 +148,17 @@ function renderTimeline(data) {
 function setupCollapsibleCategories() {
     const headers = document.querySelectorAll('.category-header');
     headers.forEach(header => {
-        header.addEventListener('click', () => {
-            const categoryId = header.dataset.category;
-            const rows = document.querySelectorAll(`.conference-row[data-category="${categoryId}"]`);
-            
-            header.classList.toggle('collapsed');
+        // 初期状態：閉じた状態にする
+        const categoryId = header.dataset.category;
+        const rows = document.querySelectorAll(`.conference-row[data-category="${categoryId}"]`);
+        header.classList.add('collapsed');
+        rows.forEach(row => row.classList.add('hidden'));
 
-            rows.forEach(row => {
-                row.classList.toggle('hidden');
-            });
+        header.addEventListener('click', () => {
+            const cId = header.dataset.category;
+            const cRows = document.querySelectorAll(`.conference-row[data-category="${cId}"]`);
+            header.classList.toggle('collapsed');
+            cRows.forEach(row => row.classList.toggle('hidden'));
         });
     });
 }
