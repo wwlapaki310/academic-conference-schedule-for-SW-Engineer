@@ -232,7 +232,7 @@ function addTodayMarker() {
         // Calculate the left position of the line relative to the timeline container
         const percentageAcrossMonth = (currentDay - 1) / (daysInMonth - 1);
         const leftOffsetWithinColumn = headerRect.width * percentageAcrossMonth;
-        const totalLeftOffset = (headerRect.left - timelineRect.left) + leftOffsetWithinColumn;
+        const totalLeftOffset = (headerRect.left - timelineRect.left) + timelineContainer.scrollLeft + leftOffsetWithinColumn;
 
         const todayLine = document.createElement('div');
         todayLine.classList.add('today-vertical-marker');
