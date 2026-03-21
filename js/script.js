@@ -148,14 +148,6 @@ function renderTimeline(data) {
 function setupCollapsibleCategories() {
     const headers = document.querySelectorAll('.category-header');
     headers.forEach(header => {
-        // 初期状態：機械学習・AI のみ開く、他は閉じる
-        const categoryId = header.dataset.category;
-        const rows = document.querySelectorAll(`.conference-row[data-category="${categoryId}"]`);
-        if (header.querySelector('.category-name-cell')?.textContent.trim() !== '機械学習・AI') {
-            header.classList.add('collapsed');
-            rows.forEach(row => row.classList.add('hidden'));
-        }
-
         header.addEventListener('click', () => {
             const cId = header.dataset.category;
             const cRows = document.querySelectorAll(`.conference-row[data-category="${cId}"]`);
