@@ -76,7 +76,7 @@ function renderTimeline(data) {
             else if (currentCategory === 'ロボティクス') icon = '🤖';
             else if (currentCategory === 'HCI・グラフィックス') icon = '🖥️';
             else if (currentCategory === 'セキュリティ') icon = '🔒';
-            html += `<tr class="category-header" data-category="${categoryId}"><td colspan="${dates.length + 1}">${icon} ${currentCategory}</td></tr>`;
+            html += `<tr class="category-header" data-category="${categoryId}"><td class="category-name-cell">${icon} ${currentCategory}</td><td class="category-spacer" colspan="${dates.length}"></td></tr>`;
         }
 
         // --- Cycle Grouping Logic ---

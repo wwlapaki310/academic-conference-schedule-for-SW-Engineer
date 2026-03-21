@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:neurips.cc)",
+      "WebFetch(domain:www.ndss-symposium.org)",
+      "WebFetch(domain:uist.acm.org)",
+      "WebFetch(domain:s2026.siggraph.org)",
+      "WebFetch(domain:deadlines.cpusec.org)",
+      "WebFetch(domain:i.blackhat.com)",
+      "WebFetch(domain:mpc-deadlines.github.io)",
+      "WebFetch(domain:blackhat.com)",
+      "WebFetch(domain:europe-trainings-cfp.blackhat.com)",
+      "WebFetch(domain:europe-briefings-cfp.blackhat.com)"
+    ]
+  }
+}
